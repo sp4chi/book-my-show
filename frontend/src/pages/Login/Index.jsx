@@ -1,14 +1,38 @@
-import { Form } from 'antd';
+import { Form, message } from 'antd';
 import Button from '../../components/Button';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+
+import { loginUser } from '../../apicalls/auth';
 
 const Login = () => {
+  const navigate = useNavigate();
+  const onSubmit = async (values) => {
+    try {
+      const response = await loginUser(values);
+
+      if (response.status === 'success') {
+        message.success(response.message);
+
+        /**
+         * Saving session token in local storage
+         */
+        localStorage.setItem('token', response.data);
+
+        navigate('/');
+      } else {
+        message.error(response.message);
+      }
+    } catch (error) {
+      message.error(error.message);
+    }
+  };
+
   return (
     <div className='flex justify-center h-screen items-center bg-primary'>
       <div className='card p-3 w-400'>
         <h1 className='text-xl mb-1'>Welcome Again! Please Login</h1>
         <hr />
-        <Form layout='vertical' className='mt-1'>
+        <Form layout='vertical' className='mt-1' onFinish={onSubmit}>
           <Form.Item
             label='Email'
             name='email'

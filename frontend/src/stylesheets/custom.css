@@ -95,6 +95,10 @@ thead th {
   animation: loader-anim 1s linear infinite;
 }
 
+.reset {
+  all: unset;
+}
+
 /* loader animation */
 
 @keyframes loader-anim {
