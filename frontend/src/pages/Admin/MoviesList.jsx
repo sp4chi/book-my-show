@@ -5,7 +5,7 @@ import moment from 'moment';
 import { message, Table } from 'antd';
 import { useDispatch } from 'react-redux';
 import { HideLoading, ShowLoading } from '../../redux/loaderSlice';
-import { GetAllMovies } from '../../apicalls/movies';
+import { DeleteMovie, GetAllMovies } from '../../apicalls/movies';
 
 function MoviesList() {
   const [movies, setMovies] = useState([]);
@@ -13,6 +13,7 @@ function MoviesList() {
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [formType, setFormType] = useState('add');
   const dispatch = useDispatch();
+
   const getData = async () => {
     try {
       dispatch(ShowLoading());
@@ -30,22 +31,21 @@ function MoviesList() {
   };
 
   const handleDelete = async (movieId) => {
-    // try {
-    //   dispatch(ShowLoading());
-    //   const response = await DeleteMovie({
-    //     movieId,
-    //   });
-    //   if (response.success) {
-    //     message.success(response.message);
-    //     getData();
-    //   } else {
-    //     message.error(response.message);
-    //   }
-    //   dispatch(HideLoading());
-    // } catch (error) {
-    //   dispatch(HideLoading());
-    //   message.error(error.message);
-    // }
+    try {
+      dispatch(ShowLoading());
+
+      const response = await DeleteMovie(movieId);
+      if (response.status === 'success') {
+        message.success(response.message);
+        getData();
+      } else {
+        message.error(response.message);
+      }
+      dispatch(HideLoading());
+    } catch (error) {
+      dispatch(HideLoading());
+      message.error(error.message);
+    }
   };
 
   const columns = [
@@ -72,6 +72,7 @@ function MoviesList() {
     {
       title: 'Description',
       dataIndex: 'description',
+      ellipsis: true,
     },
     {
       title: 'Duration',
