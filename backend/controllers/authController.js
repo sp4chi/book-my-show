@@ -28,7 +28,7 @@ export const login = async (req, res) => {
     }
 
     const token = jwt.sign({ userId: user._id }, process.env.jwt_secret, {
-      expiresIn: '1d',
+      expiresIn: 1000 * 60 * 30 + '', //30 mins
     });
 
     res.status(200).json({
@@ -37,9 +37,10 @@ export const login = async (req, res) => {
       data: token,
     });
   } catch (error) {
+    console.log(error.message);
     res.status(500).json({
       status: 'failed',
-      message: 'Login unsuccessful!',
+      message: error.message,
     });
   }
 };
@@ -48,6 +49,7 @@ export const register = async (req, res) => {
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(req.body.password, salt);
 
+    await User.init();
     await User.create({ ...req.body, password: hash });
 
     // const { name, email, password, isAdmin, ...rest } = newUser._doc;
@@ -57,6 +59,7 @@ export const register = async (req, res) => {
       message: 'User has been created!',
     });
   } catch (error) {
+    console.log(error.message);
     res.status(500).json({
       status: 'failed',
       message: 'Email already registered!',
