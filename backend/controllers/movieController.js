@@ -1,4 +1,4 @@
-import Movie from '../models/movieModal.js';
+import Movie from '../models/movieModel.js';
 
 export const addMovie = async (req, res) => {
   try {
