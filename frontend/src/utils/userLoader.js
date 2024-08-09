@@ -35,7 +35,7 @@ const getpresentUser = async (dispatch) => {
 
     message.error(error.message);
 
-    return null;
+    return error.message;
   } finally {
     dispatch(HideLoading());
   }

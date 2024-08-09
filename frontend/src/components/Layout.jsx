@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'; */
 const Layout = () => {
   const navigate = useNavigate();
   const user = useLoaderData();
+  console.log(user);
   /*  const dispatch = useDispatch();
   const { user } = useSelector((state) => state.users);
   dispatch(SetUser(userData));

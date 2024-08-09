@@ -5,16 +5,17 @@ const theatreSchema = new mongoose.Schema(
     name: {
       type: String,
       required: true,
+      unique: true,
     },
 
     address: {
       type: String,
-      required: true``,
+      required: true,
     },
 
     phone: {
       type: String,
-      required: true``,
+      required: true,
     },
 
     email: {

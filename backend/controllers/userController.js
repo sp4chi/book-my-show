@@ -7,7 +7,6 @@ export const getCurrentUser = async (req, res) => {
     res.status(200).json({
       status: 'success',
       message: 'User details fetched successfully',
-      data: user,
     });
   } catch (error) {
     res.status(500).json({

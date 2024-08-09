@@ -6,6 +6,7 @@ import cors from 'cors';
 import authRoute from './routes/authRoute.js';
 import userRoute from './routes/userRoute.js';
 import movieRoute from './routes/movieRoute.js';
+import theatreRoute from './routes/theatreRoute.js';
 
 const app = express();
 
@@ -28,6 +29,16 @@ app.use(express.json());
 app.use('/api/v1/auth', authRoute);
 app.use('/api/v1/user', userRoute);
 app.use('/api/v1/movies', movieRoute);
+app.use('/api/v1/theatre', theatreRoute);
+
+app.use((error, req, res, next) => {
+  const status = error.status || 500;
+  const message = error.message || 'Something went wrong';
+  return res.status(status).json({
+    status: 'failed',
+    message,
+  });
+});
 
 app.listen(process.env.PORT, () => {
   console.log('connected to server ✨');
